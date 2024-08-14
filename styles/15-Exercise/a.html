@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head><title>Day js</title></head>
+  <body>
+
+    <script type="module">
+      import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+      import isSunSat from './f.js';
+
+      
+      
+      
+      const date = dayjs().add(4,'days');
+      console.log(date.format('dddd'));
+      console.log(isSunSat(date));
+      
+      
+    </script>
+  </body>
+</html>

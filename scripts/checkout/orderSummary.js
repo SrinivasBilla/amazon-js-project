@@ -2,8 +2,9 @@ import { calculateCartQuantity, cart, removeFromCart, updateDeliveryOption, upda
 import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import  dayjs  from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
-import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOption.js";
+import { deliveryOptions, getDeliveryOption, calculateDeliveryOption } from "../../data/deliveryOption.js";
 import { renderPaymentSummery } from "./paymentSummary.js";
+import { renderCheckOutHeader } from "./checkoutHeader.js";
 
 export function renderOrderSummery() {
     let cartSummaryHTML = '';
@@ -14,14 +15,7 @@ export function renderOrderSummery() {
       
       const deliveryOptionId = cartItem.deliveryOptionId;
       const deliveryOption = getDeliveryOption(deliveryOptionId);
-        const today = dayjs();
-          const deliveryDate = today.add(
-            deliveryOption.deliveryDays,
-            'days'
-          );
-        const dateString = deliveryDate.format(
-          'dddd, MMMM D'
-        );
+      const dateString = calculateDeliveryOption(deliveryOption)
       cartSummaryHTML += `
       <div class="cart-item-container js-cart-item-container-${matchingItem.id}">
                 <div class="delivery-date">
@@ -72,9 +66,7 @@ export function renderOrderSummery() {
     function deliveryOptionsHTMl(matchingItem, cartItem) {
       let html = "";
       deliveryOptions.forEach((deliveryOption) => {
-        const today = dayjs();
-        const deliveryDate = today.add(deliveryOption.deliveryDays, 'days');
-        const dateString = deliveryDate.format('dddd, MMMM, D');
+        const dateString = calculateDeliveryOption(deliveryOption);
         const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)} - `;
         const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
@@ -106,9 +98,9 @@ export function renderOrderSummery() {
         const productId = link.dataset.productId;
         removeFromCart(productId);
 
-        const container = document.querySelector(`.js-cart-item-container-${productId}`);
-        container.remove();
+        renderOrderSummery();
         renderPaymentSummery();
+        renderCheckOutHeader();
         
       });
     });
