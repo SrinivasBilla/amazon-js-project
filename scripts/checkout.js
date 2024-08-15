@@ -1,7 +1,10 @@
 import { renderCheckOutHeader } from "./checkout/checkoutHeader.js";
-import { renderOrderSummery } from "./checkout/orderSummary.js";
-import { renderPaymentSummery } from "./checkout/paymentSummary.js";
+import { renderOrderSummary } from "./checkout/orderSummary.js";
+import { renderPaymentSummary } from "./checkout/paymentSummary.js";
+import '../data/cart-oop.js';
 
 renderCheckOutHeader();
-renderOrderSummery();
-renderPaymentSummery();
+renderOrderSummary();
+renderPaymentSummary();
+
+

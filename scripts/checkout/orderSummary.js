@@ -3,21 +3,26 @@ import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import  dayjs  from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import { deliveryOptions, getDeliveryOption, calculateDeliveryOption } from "../../data/deliveryOption.js";
-import { renderPaymentSummery } from "./paymentSummary.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 import { renderCheckOutHeader } from "./checkoutHeader.js";
 
-export function renderOrderSummery() {
+export function renderOrderSummary() {
     let cartSummaryHTML = '';
     cart.forEach((cartItem) => {
       const productId = cartItem.productId;
       const matchingItem = getProduct(productId);
-      
-      
       const deliveryOptionId = cartItem.deliveryOptionId;
       const deliveryOption = getDeliveryOption(deliveryOptionId);
-      const dateString = calculateDeliveryOption(deliveryOption)
+      const today = dayjs();
+      const deliveryDate = today.add(
+      deliveryOption.deliveryDays,
+      'days'
+    );
+    const dateString = deliveryDate.format(
+      'dddd, MMMM D'
+    );
       cartSummaryHTML += `
-      <div class="cart-item-container js-cart-item-container-${matchingItem.id}">
+      <div class="cart-item-container js-cart-item-container js-cart-item-container-${matchingItem.id}">
                 <div class="delivery-date">
                   Delivery date: ${dateString}
                 </div>
@@ -33,7 +38,7 @@ export function renderOrderSummery() {
                     <div class="product-price">
                       $${formatCurrency(matchingItem.priceCents)}
                     </div>
-                    <div class="product-quantity">
+                    <div class="product-quantity js-product-quantity-${matchingItem.id}">
                       <span>
                         Quantity: <span class="quantity-label js-quantity-label-${matchingItem.id}">${cartItem.quantity}</span>
                       </span>
@@ -42,7 +47,7 @@ export function renderOrderSummery() {
                       </span>
                       <input class="quantity-input js-quantity-input-${matchingItem.id}">
                         <span class="save-quantity-link link-primary js-save-quantity-link" data-product-id="${matchingItem.id}">Save</span>
-                      <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingItem.id}">
+                      <span class="delete-quantity-link link-primary js-delete-link js-delete-link-${matchingItem.id}" data-product-id="${matchingItem.id}">
                         Delete
                       </span>
                     </div>
@@ -98,8 +103,8 @@ export function renderOrderSummery() {
         const productId = link.dataset.productId;
         removeFromCart(productId);
 
-        renderOrderSummery();
-        renderPaymentSummery();
+        renderOrderSummary();
+        renderPaymentSummary();
         renderCheckOutHeader();
         
       });
@@ -150,8 +155,8 @@ export function renderOrderSummery() {
       element.addEventListener('click', () => {
         const {productId, deliveryOptionId} = element.dataset;
         updateDeliveryOption(productId, deliveryOptionId);
-        renderOrderSummery();
-        renderPaymentSummery();
+        renderOrderSummary();
+        renderPaymentSummary();
       });
 
     })

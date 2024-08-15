@@ -3,7 +3,7 @@ import { getDeliveryOption } from "../../data/deliveryOption.js";
 import { getProduct } from "../../data/products.js";
 import formatCurrency from "../utils/money.js";
 
-export function renderPaymentSummery() {
+export function renderPaymentSummary() {
   let productPriceCents = 0;
   let shippingPriceCents = 0;
   cart.forEach((cartItem) => {
@@ -58,5 +58,5 @@ export function renderPaymentSummery() {
                 Place your order
               </button>
   `
-  document.querySelector('.js-payment-summery').innerHTML = paymentSummaryHTML;
+  document.querySelector('.js-payment-summary').innerHTML = paymentSummaryHTML;
 }
