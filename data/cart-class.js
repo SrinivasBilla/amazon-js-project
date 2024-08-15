@@ -1,14 +1,14 @@
 class Cart {
   cartItem;
-  localStorageKey;
+  #localStorageKey;
 
   constructor(localStorageKey) {
-    this.localStorageKey = localStorageKey;
-    this.loadFromStorage();
+    this.#localStorageKey = localStorageKey;
+    this.#loadFromStorage();
   }
 
-  loadFromStorage() {
-    this.cartItem = JSON.parse(localStorage.getItem(this.localStorageKey));
+  #loadFromStorage() {
+    this.cartItem = JSON.parse(localStorage.getItem(this.#localStorageKey));
   
         if (!this.cartItem){
               
@@ -27,7 +27,7 @@ class Cart {
         }
   }
   saveToStorage() {
-    localStorage.setItem(this.localStorageKey, JSON.stringify(cart));
+    localStorage.setItem(this.#localStorageKey, JSON.stringify(cart));
   }
   addToCart(productId) {
     let matchingItem;
