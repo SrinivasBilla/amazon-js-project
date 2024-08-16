@@ -1,5 +1,5 @@
 class Cart {
-  cartItem;
+  cartItems;
   #localStorageKey;
 
   constructor(localStorageKey) {
@@ -8,11 +8,11 @@ class Cart {
   }
 
   #loadFromStorage() {
-    this.cartItem = JSON.parse(localStorage.getItem(this.#localStorageKey));
+    this.cartItems = JSON.parse(localStorage.getItem(this.#localStorageKey));
   
-        if (!this.cartItem){
+        if (!this.cartItems){
               
-            this.cartItem = [
+            this.cartItems = [
               {
                 productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
                 quantity: 2,
@@ -32,16 +32,16 @@ class Cart {
   addToCart(productId) {
     let matchingItem;
   
-      this.cartItem.forEach((cartItem) => {
-        if(productId === cartItem.productId){
-          matchingItem = cartItem;
+      this.cartItems.forEach((cartItems) => {
+        if(productId === cartItems.productId){
+          matchingItem = cartItems;
         }
       });
   
         if(matchingItem) {
           matchingItem.quantity += 1;
         }else {
-          this.cartItem.push({
+          this.cartItems.push({
             productId: productId,
             quantity: 1,
             deliveryOptionId: '1'
@@ -51,26 +51,26 @@ class Cart {
   }
   removeFromCart(productId) {
     const newCart = [];
-    cart.forEach((cartItem) => {
-      if (cartItem.productId !== productId) {
-        newCart.push(cartItem);
+    this.cartItems.forEach((cartItems) => {
+      if (cartItems.productId !== productId) {
+        newCart.push(cartItems);
       }
     });
-    this.cartItem = newCart;
+    this.cartItems = newCart;
     this.saveToStorage();
   }
   calculateCartQuantity() {
     let cartQuantity = 0;
-        this.cartItem.forEach((cartItem) => {
+        this.cartItems.forEach((cartItem) => {
           cartQuantity += cartItem.quantity;
         });
         return cartQuantity;
   }
   updateQuantity(productId, newQuantity) {
     let matchingItem;
-    this.cartItem.forEach((cartItem) => {
-      if (productId === cartItem.productId) {
-        matchingItem = cartItem;
+    this.cartItems.forEach((cartItems) => {
+      if (productId === cartItems.productId) {
+        matchingItem = cartItems;
       }
     });
     matchingItem.quantity = newQuantity;
@@ -78,9 +78,9 @@ class Cart {
   }
   updateDeliveryOption(productId, deliveryOptionId) {
     let matchingItem;
-    this.cartItem.forEach((cartItem) => {
-      if (productId === cartItem.productId) {
-        matchingItem = cartItem;
+    this.cartItems.forEach((cartItems) => {
+      if (productId === cartItems.productId) {
+        matchingItem = cartItems;
       }
     });
     matchingItem.deliveryOptionId = deliveryOptionId;
@@ -92,12 +92,11 @@ class Cart {
 
 
 
-const cart =new Cart('cart-oop');
+export const cart =new Cart('cart-oop');
 const businessCart =new Cart('cart-business');
 
 console.log(cart);
 console.log(businessCart);
-
 
 
 
